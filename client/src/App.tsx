@@ -1,13 +1,7 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 
 function App() {
-  return (
-    <Box>
-        <Text>
-          Hello World!
-        </Text>
-    </Box>
-  );
+  return <Text>Hello World</Text>;
 }
 
 export default App;

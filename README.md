@@ -1,1 +1,1 @@
-# JWT Authentication system for MERN stack
+# JWT authentication system for MERN stack
