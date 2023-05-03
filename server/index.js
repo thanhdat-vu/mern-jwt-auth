@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+const authRoutes = require('./routes/auth.route.js');
+
 require('dotenv').config();
 
 const app = express();
@@ -19,6 +22,7 @@ app.use(express.json());
 app.get('/', (_, res) => {
   res.send('Server is running');
 });
+app.use('/api/auth', authRoutes);
 
 // Start server
 app.listen(port, () => {

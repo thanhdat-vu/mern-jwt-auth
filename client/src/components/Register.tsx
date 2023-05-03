@@ -11,8 +11,11 @@ import {
   Center,
   Link,
   Checkbox,
+  AlertIcon,
+  Alert,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { registerUser } from "../lib/api";
 
 interface LoginFormValues {
   username: string;
@@ -31,8 +34,16 @@ const initialValues: LoginFormValues = {
 };
 
 export function Register() {
-  const handleSubmit = (values: LoginFormValues) => {
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  const handleSubmit = async (values: LoginFormValues) => {
     console.log(values);
+    try {
+      const { token } = await registerUser(values);
+      console.log(token);
+    } catch (error: any) {
+      setErrorMessage(error.response.data.message);
+    }
   };
 
   const validateForm = (values: LoginFormValues) => {
@@ -87,6 +98,12 @@ export function Register() {
               <Heading as="h3" size="md" textAlign="center">
                 REGISTER
               </Heading>
+              {errorMessage && (
+                <Alert status="error">
+                  <AlertIcon />
+                  {errorMessage}
+                </Alert>
+              )}
               <Field name="username">
                 {({ field, form }: any) => (
                   <FormControl
