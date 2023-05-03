@@ -1,3 +1,4 @@
+import React from "react";
 import { Formik, Form, Field } from "formik";
 import {
   FormControl,
@@ -9,7 +10,9 @@ import {
   Heading,
   Checkbox,
   Center,
+  Link,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 
 interface LoginFormValues {
   email: string;
@@ -101,13 +104,18 @@ export function Login() {
               </Field>
               <Checkbox defaultChecked>Remember me</Checkbox>
               <Button
-                mt={4}
                 colorScheme="blue"
                 isLoading={props.isSubmitting}
                 type="submit"
               >
                 Login
               </Button>
+              <Text textAlign="center">
+                Not a member?{" "}
+                <Link as={RouterLink} to="/register" color="blue.500">
+                  Register now
+                </Link>
+              </Text>
             </Stack>
           </Form>
         )}
