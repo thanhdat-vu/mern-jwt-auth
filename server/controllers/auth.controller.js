@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
-const { generateToken } = require('../utils/jwt');
+const { generateToken, verifyToken } = require('../utils/jwt');
+const { sendVerificationEmail } = require('../utils/mailer');
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -9,7 +10,20 @@ const register = async (req, res) => {
     const newUser = new User({ username, email, password });
     await newUser.save();
     const token = generateToken(newUser._id);
-    res.status(201).json({ message: 'User registered successfully', token });
+    await sendVerificationEmail(email, token);
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+const verifyEmail = async (req, res) => {
+  const { token } = req.params;
+  try {
+    const { id } = verifyToken(token);
+    await User.findByIdAndUpdate(id, { isVerified: true });
+    res.status(200).json({ message: 'Email verified successfully' });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -18,4 +32,5 @@ const register = async (req, res) => {
 
 module.exports = {
   register,
+  verifyEmail,
 };

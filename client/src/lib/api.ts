@@ -8,3 +8,8 @@ export const registerUser = async (user: any) => {
   const res = await api.post("/auth/register", user);
   return res.data;
 };
+
+export const verifyEmail = async (token: string) => {
+  const res = await api.get(`/auth/verify-email/${token}`);
+  return res.data;
+};

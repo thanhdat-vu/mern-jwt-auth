@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import {
   FormControl,
@@ -13,6 +13,8 @@ import {
   Checkbox,
   AlertIcon,
   Alert,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { registerUser } from "../lib/api";
@@ -34,13 +36,14 @@ const initialValues: LoginFormValues = {
 };
 
 export function Register() {
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [accountCreated, setAccountCreated] = useState(false);
 
   const handleSubmit = async (values: LoginFormValues) => {
     console.log(values);
     try {
-      const { token } = await registerUser(values);
-      console.log(token);
+      await registerUser(values);
+      setAccountCreated(true);
     } catch (error: any) {
       setErrorMessage(error.response.data.message);
     }
@@ -77,6 +80,41 @@ export function Register() {
     }
     return errors;
   };
+
+  if (accountCreated) {
+    return (
+      <Center minH="100vh">
+        <Stack
+          w="400px"
+          spacing={5}
+          p={10}
+          border="1px"
+          borderColor="gray.200"
+          borderRadius="lg"
+          textAlign="center"
+        >
+          <Alert
+            status="success"
+            variant="subtle"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            height="200px"
+            bg="white"
+          >
+            <AlertIcon boxSize="40px" mr={0} />
+            <AlertTitle mt={4} mb={1} fontSize="lg">
+              Account Created!
+            </AlertTitle>
+            <AlertDescription maxWidth="sm">
+              You have successfully created your account. Please check your
+              email to verify your account.
+            </AlertDescription>
+          </Alert>
+        </Stack>
+      </Center>
+    );
+  }
 
   return (
     <Center minH="100vh">
