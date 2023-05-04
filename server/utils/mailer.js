@@ -13,7 +13,7 @@ const sendVerificationEmail = async (email, token) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USERNAME,
+      from: 'no-reply@gmail.com',
       to: email,
       subject: 'Account Verification',
       html: `

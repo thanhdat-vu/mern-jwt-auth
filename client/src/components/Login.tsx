@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import {
   FormControl,
@@ -11,8 +11,12 @@ import {
   Checkbox,
   Center,
   Link,
+  Alert,
+  AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { loginUser } from "../lib/api";
 
 interface LoginFormValues {
   email: string;
@@ -25,8 +29,25 @@ const initialValues: LoginFormValues = {
 };
 
 export function Login() {
-  const handleSubmit = (values: LoginFormValues) => {
-    console.log(values);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
+  const toast = useToast();
+  const handleSubmit = async (values: LoginFormValues) => {
+    try {
+      const { token } = await loginUser(values);
+      console.log(token);
+      navigate("/");
+      toast({
+        title: "Login successful!",
+        position: "bottom-right",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      setErrorMessage(error.response.data.message);
+    }
   };
 
   const validateForm = (values: LoginFormValues) => {
@@ -69,6 +90,12 @@ export function Login() {
               <Heading as="h3" size="md" textAlign="center">
                 LOGIN
               </Heading>
+              {errorMessage && (
+                <Alert status="error">
+                  <AlertIcon />
+                  {errorMessage}
+                </Alert>
+              )}
               <Field name="email">
                 {({ field, form }: any) => (
                   <FormControl
