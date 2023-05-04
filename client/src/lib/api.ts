@@ -18,3 +18,16 @@ export const loginUser = async (user: any) => {
   const res = await api.post("/auth/login", user);
   return res.data;
 };
+
+export const forgotPassword = async (email: string) => {
+  const res = await api.post("/auth/forgot-password", { email });
+  return res.data;
+};
+
+export const resetPassword = async (token: string, password: string) => {
+  const res = await api.post(`/auth/reset-password/${token}`, {
+    token,
+    password,
+  });
+  return res.data;
+};

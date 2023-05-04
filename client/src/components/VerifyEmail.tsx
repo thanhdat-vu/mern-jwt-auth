@@ -13,7 +13,6 @@ import { verifyEmail } from "../lib/api";
 
 export function VerifyEmail() {
   const { token } = useParams();
-  console.log(token);
 
   useEffect(() => {
     if (!token) return;

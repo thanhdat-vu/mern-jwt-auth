@@ -13,7 +13,7 @@ const sendVerificationEmail = async (email, token) => {
     });
 
     const mailOptions = {
-      from: 'no-reply@gmail.com',
+      from: process.env.EMAIL_USERNAME,
       to: email,
       subject: 'Account Verification',
       html: `
@@ -30,6 +30,35 @@ const sendVerificationEmail = async (email, token) => {
   }
 }
 
+const sendResetPasswordEmail = async (email, token) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USERNAME,
+      to: email,
+      subject: 'Reset Password',
+      html: `
+        <h1>Reset Password</h1>
+        <p>Please click on this link to reset your password</p>
+        <a href="${process.env.CLIENT_URL}/reset-password/${token}">Reset Password</a>
+      `,
+    };
+
+    const result = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + result.response);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   sendVerificationEmail,
+  sendResetPasswordEmail,
 };

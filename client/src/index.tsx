@@ -4,7 +4,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Login, Register, VerifyEmail } from "./components";
+import {
+  Login,
+  Register,
+  VerifyEmail,
+  ForgotPassword,
+  ResetPassword,
+} from "./components";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +18,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/login",
+    path: "login",
     element: <Login />,
   },
   {
@@ -22,6 +28,14 @@ const router = createBrowserRouter([
   {
     path: "verify/:token",
     element: <VerifyEmail />,
+  },
+  {
+    path: "forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "reset-password/:token",
+    element: <ResetPassword />,
   },
 ]);
 
